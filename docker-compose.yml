@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+    api:
+        build: .
+        depends_on:
+            - db
+        environment:
+            FLASK_APP: main.py
+            FLASK_RUN_HOST: 0.0.0.0
+            FLASK_ENV: development
+        networks:
+            - default
+        ports:
+            - 5000:5000
+
+    db:
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: hf_menu_plan
+        image: postgres:latest
+        user: postgres
+        networks:
+            - default
+        ports:
+            - 5432:5432

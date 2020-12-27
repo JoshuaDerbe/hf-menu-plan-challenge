@@ -1,18 +1,10 @@
-FROM ubuntu:20.04
-
-RUN apt-get update -y && \
-    apt-get install -y python3-pip
-COPY ./backend/requirements.txt /hf-menu-plan-challenge/backend/requirements.txt
-
-WORKDIR /hf-menu-plan-challenge/backend
-
-RUN pip3 install -r requirements.txt
-
-ENV FLASK_APP="__init__.py"
-ENV FLASK_ENV="development"
-
-COPY . /hf-menu-plan-challenge
-
-ENTRYPOINT [ "python3" ]
-
-CMD [ "init.py" ]
+FROM python:3.8-alpine
+COPY . .
+WORKDIR /backend
+ENV FLASK_APP=main.py
+ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_ENV=development
+RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
+RUN pip install -r requirements.txt
+EXPOSE 5000
+CMD ["python3", "main.py"]
