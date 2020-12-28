@@ -11,7 +11,9 @@ from models.menuReview import MenuReview
 from models.onMenu import OnMenu
 from models.recipe import Recipe
 from models.recipeReview import RecipeReview
-from routes import *
+
+from routes.general import *
+from routes.ingredients import *
 
 def create_tables():
     with db:
@@ -21,4 +23,4 @@ def create_tables():
 if __name__ == "__main__":
     print("Creating tables...")
     create_tables()
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0", port="5000", debug=True)
