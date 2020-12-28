@@ -3,6 +3,7 @@ from playhouse.shortcuts import model_to_dict, dict_to_model
 import json
 from json import dumps
 from flask import *
+import flask_praetorian
 
 from app import app
 
@@ -10,12 +11,14 @@ from models.ingredient import Ingredient
 
 # Route to get the details of all ingredients in the database.
 @app.route("/api/ingredients/", methods=["GET"])
+@flask_praetorian.auth_required
 def get_ingredients():
     ingredients = Ingredient.select()
     return jsonify({"results":[model_to_dict(ingredient) for ingredient in ingredients]})
 
 # Route to the details of a list of specific ingredients in the database.
 @app.route("/api/ingredients/", methods=["POST"])
+@flask_praetorian.auth_required
 def get_specific_ingredients():
     data = request.json
     if (data != None):
@@ -34,6 +37,7 @@ def get_specific_ingredients():
 
 # Route to add an ingredient to the database.
 @app.route("/api/ingredients/add/", methods=["POST"])
+@flask_praetorian.roles_required("admin")
 def add_ingredient(): 
     ingredient_data = request.json
     if (ingredient_data != None):
@@ -56,6 +60,7 @@ def add_ingredient():
 
 # Route to update an ingredient in the database.
 @app.route("/api/ingredients/", methods=["PUT"])
+@flask_praetorian.roles_required("admin")
 def update_ingredient(): 
     ingredient_data = request.json
     if (ingredient_data != None):
@@ -96,6 +101,7 @@ def update_ingredient():
 
 # Route to remove an ingredient from the database.
 @app.route("/api/ingredients/<i_id>", methods=["DELETE"])
+@flask_praetorian.roles_required("admin")
 def delete_ingredient(i_id): 
     # Check if the ingredient already exists.
     existing_ingredient = Ingredient.select().where(Ingredient.id == i_id)
