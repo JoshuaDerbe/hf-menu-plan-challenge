@@ -28,9 +28,9 @@ def add_user():
         abort(Response(dumps({"Error": "A user with this email already exists"}), 403))
 
     # Add the user
-    user = User.create(email=email.lower(), password=guard.hash_password(password), roles="[user]")
+    user = User.create(email=email.lower(), password=guard.hash_password(password), roles="user")
 
-    return "Successfully created user with email {}!".format(email.lower())
+    return jsonify({"results": {"id": user.id, "email": user.email}})
 
 @app.route("/api/login/", methods=["POST"])
 def login():
@@ -45,3 +45,17 @@ def login():
 
     user = guard.authenticate(email, password)
     return jsonify({"access_token": guard.encode_jwt_token(user), "roles": user.roles})
+
+# Route to delete a user from the database.
+@app.route("/api/users/<u_id>", methods=["DELETE"])
+@flask_praetorian.roles_required("admin")
+def delete_user(u_id): 
+    # Check if the user already exists.
+    existing_user = User.select().where(User.id == u_id)
+    if (not existing_user.exists()):
+        abort(Response(dumps({"Error": "A user with this id does not exist"}), 403))
+
+    # Delete the user.
+    existing_user.get().delete_instance()
+
+    return "Successfully deleted user with id {}.".format(u_id)
