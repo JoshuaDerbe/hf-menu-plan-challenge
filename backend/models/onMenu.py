@@ -9,3 +9,8 @@ from models.recipe import Recipe
 class OnMenu(BaseModel):
     menu = ForeignKeyField(Menu, null=False)
     recipe = ForeignKeyField(Recipe, null=False)
+
+    class Meta:
+        # menu and recipe together should be the primary key.
+        # There should never be two rows with the same menu and recipe.
+        primary_key = CompositeKey("menu", "recipe")
