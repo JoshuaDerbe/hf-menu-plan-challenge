@@ -59,7 +59,7 @@ def add_ingredient():
     return jsonify({"results":model_to_dict(ingredient)})
 
 # Route to update an ingredient in the database.
-@app.route("/api/ingredients/", methods=["PUT"])
+@app.route("/api/ingredients/edit/", methods=["POST"])
 @flask_praetorian.roles_required("admin")
 def update_ingredient(): 
     ingredient_data = request.json

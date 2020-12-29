@@ -28,6 +28,6 @@ if __name__ == "__main__":
     # Add a base admin if it does not already exist
     existing_admin = User.select().where(User.email == "admin@admin.com")
     if(not existing_admin.exists()):
-        admin = User.create(email="admin@admin.com", password=guard.hash_password("password"), roles="[admin]")
+        admin = User.create(email="admin@admin.com", password=guard.hash_password("password"), roles="admin")
 
     app.run(host="0.0.0.0", port="5000", debug=True)

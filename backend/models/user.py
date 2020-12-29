@@ -10,11 +10,11 @@ class User(BaseModel):
     email = CharField(null=False, unique=True, max_length=100)
     # password is a string restricted to 256 characters, that should be hashed
     password = CharField(null=False, max_length=256)
-    # roles is a string of form "[role,role,...]"
+    # roles is a string of form "role,role,..."
     roles = CharField(null=False)
 
     class Meta:
-        db_table = "user_table"
+        table_name = "user_table"
     
     @property
     def identity(self):
@@ -36,7 +36,7 @@ class User(BaseModel):
         try:
             return self.roles.split(",")
         except Exception:
-            return []
+            return ""
 
     @classmethod
     def lookup(cls, email):
