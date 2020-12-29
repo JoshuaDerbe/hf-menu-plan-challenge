@@ -4,6 +4,7 @@ from app import app, db, guard
 
 from models.user import User
 from models.ingredient import Ingredient
+from models.allergen import Allergen
 from models.inRecipe import InRecipe
 from models.menu import Menu
 from models.menuReview import MenuReview
@@ -18,7 +19,7 @@ from routes.users import *
 def create_tables():
     with db:
         # Create table for each model if it does not exist.
-        db.create_tables([User,Ingredient,InRecipe,Menu,MenuReview,OnMenu,Recipe,RecipeReview])
+        db.create_tables([User,Ingredient,Allergen,InRecipe,Menu,MenuReview,OnMenu,Recipe,RecipeReview])
 
 
 if __name__ == "__main__":
